@@ -24,7 +24,7 @@
     "skeleton",
     "scaffold"
   ],
-  "author": "YOUR NAME HERE",
+  "author": "Patrick Narkinsky <patrick@narkinsky.com>",
   "license": "SEE LICENSE IN license.md",
   "bugs": {
     "url": "https://github.com/ORESoftware/typescript-library-skeleton/issues"
@@ -32,7 +32,7 @@
   "homepage": "https://github.com/ORESoftware/typescript-library-skeleton#readme",
   "devDependencies": {
     "@types/jest": "^29.5.0",
-    "@types/node": "^12.20.55",
+    "@types/node": "^18.13.0",
     "typescript": "^5.0.4"
   }
 }
