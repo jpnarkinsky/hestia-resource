@@ -15,14 +15,9 @@
     "noImplicitAny": true,
     "removeComments": true,
     "allowUnreachableCode": true,
-    "lib": [
-      "es2018",
-      "es2019",
-      "es2020"
-    ]
+    "lib": ["es2018", "es2019", "es2020"],
+    "types": ["jest", "node"]
   },
   "compileOnSave": false,
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
