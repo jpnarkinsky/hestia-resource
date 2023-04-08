@@ -1,71 +1,21 @@
-
 <div align="right">
 
-Travis build status:
-[![Build Status](https://travis-ci.org/ORESoftware/typescript-library-skeleton.svg?branch=master)](https://travis-ci.org/ORESoftware/typescript-library-skeleton)
-
-CircleCI build status:
-[![CircleCI](https://circleci.com/gh/ORESoftware/typescript-library-skeleton/tree/master.svg?style=svg)](https://circleci.com/gh/ORESoftware/typescript-library-skeleton/tree/master)
+TODO: Add build status
 
 </div>
 
-## TSLS - TypeScript Library Skeleton
+# What is this?
 
-<br>
+This `hestia-resource`. It is the first major component of the Hestia system, which as of this date is under active development. The goal of this project is simple: to provide the finest environment on any platform for working with FHIR data.
 
-####  Your Project Readme Goes Here
+This is component handles FHIR resources in Typescript and I think it will offers some unique features:
 
-This skeleton project is designed for Node.js libraries.
+1. It is type-safe from end to end. This carries major advantages -- in particular, it's not possible to create invalid FHIR data.
+2. Custom types can be compiled from any implementation guide you happen to be implementing.
+3. A tightly integrated, **type safe** and performant implementation of FHIRpath is planned.
+4. Full support for import and export of the various FHIR formats (XML, JSON, YAML, FSH, etc.) is planned.
+5. In the longer term, I'd ike to implement FHIR mapping support. Tightly integrated, of course.
+6. Despite being fully typed, we strive to be the easiest FHIR API to learn AND to use.
+7. I'm doing this so that, next, I can implement a full fledged FHIR server with end-to-end type safety and without the pain of Java or .NET.
 
-<br>
-
-
-### To do things the simple way:
-
-Steps to making this project skeleton your own project base.
-
-1. Clone this repo: <br>
-    `git clone https://github.com/ORESoftware/typescript-library-skeleton.git YOUR-PROJECT-NAME`
-2. Update package.json so that `name` property matches `<YOUR-PROJECT-NAME>`.
-3. Update other package.json fields so that they are accurate.
-
-To check to see if `YOUR-PROJECT-NAME` is available on NPM, uses this command at the command line:
-
-`$ npm view YOUR-PROJECT-NAME`  # will give you a 404 if the name is available.
-
-Of course you can use Github or other hosting platforms instead of NPM to deliver your library.
-
-
-### This project skeleton uses:
-
-* the correct semver initial value (npm init defaults to 1.0.0 which is just wrong).
-* typescript version 3.4.5
-* nodejs version 12
-* travis/circleci (for automated testing of your library)
-* MIT license
-* good simple default settings for .gitignore / .npmignore / .editorconfig / .gitattributes
-* Transpiling from src to dist folders (by default; you can change it manually)
-
-
-To transpile files in place, instead of tranpiling from `'src'` to `'dist'`:
-
-<br>
-update tsconfig.json  (remove the `outDir` line):
-
-```json
-"compilerOptions": {
-    "outDir": "dist"
-}
-```
-
-For small projects with just one .ts/.js file, you can just get rid of the src/lib folder, and put your main.ts
-file in the root of the project. In that case, make sure to change the `main` property in package.json from 'lib/index.js' to
-'index.js'. Same with the `typings/types` properties.
-
-
-#### Power users
-
-This project is used by: https://github.com/oresoftware/ts-project
-You can use ts-project to do things even more automatically.
-
-<br>
+This is strictly alpha quality software at this point -- but keep watching.
