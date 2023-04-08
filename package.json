@@ -2,7 +2,7 @@
   "name": "typescript-library-skeleton",
   "version": "0.1.12",
   "description": "Semver-oriented TypeScript library skeleton.",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "bin": {
     "example": "cli/example.sh",
     "example.js": "cli/example.js"
@@ -10,13 +10,14 @@
   "types": "dist/main.d.ts",
   "typings": "dist/main.d.ts",
   "scripts": {
-    "test": "echo 'npm test is currently a no-op'",
+    "generate": "ts-node ./src/generate",
     "postinstall": "./assets/postinstall.sh",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ORESoftware/typescript-library-skeleton.git"
+    "url": "git+https://github.com/jpnarkinsky/hestia-resource.git"
   },
   "keywords": [
     "typescript",
@@ -25,14 +26,40 @@
     "scaffold"
   ],
   "author": "Patrick Narkinsky <patrick@narkinsky.com>",
-  "license": "SEE LICENSE IN license.md",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ORESoftware/typescript-library-skeleton/issues"
   },
   "homepage": "https://github.com/ORESoftware/typescript-library-skeleton#readme",
   "devDependencies": {
+    "@jorgeferrero/stream-to-buffer": "^2.0.6",
+    "@types/bluebird": "^3.5.38",
+    "@types/ini": "^1.3.31",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.13.0",
-    "typescript": "^5.0.4"
+    "@types/unzip-stream": "^0.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "axios": "^1.3.5",
+    "bluebird": "^3.7.2",
+    "commander": "^10.0.0",
+    "eslint": "^8.37.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "ini": "^4.0.0",
+    "pascalcase": "^2.0.0",
+    "ts-morph": "^18.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4",
+    "unzip-stream": "^0.3.1"
+  },
+  "type": "module",
+  "dependencies": {
+    "@types/pascalcase": "^1.0.1",
+    "debug": "^4.3.4",
+    "fhirpath": "^3.3.2",
+    "luxon": "^3.3.0"
   }
 }
