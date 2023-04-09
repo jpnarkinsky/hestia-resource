@@ -63,6 +63,7 @@
     "death": "^1.1.0",
     "debug": "^4.3.4",
     "fhirpath": "^3.3.2",
+    "handlebars": "^4.7.7",
     "inflected": "^2.1.0",
     "luxon": "^3.3.0",
     "prettier": "^2.8.7",

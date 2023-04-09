@@ -3,6 +3,7 @@ import { getValueType } from "./types";
 import { ModuleDeclaration } from "ts-morph";
 import registry from "./registry";
 import { camelize } from "inflected";
+import { evalText } from "./eval-text";
 
 const getDefinitionElements = fhirpath.compile("differential.element");
 const getElementValueType = fhirpath.compile(`type.code`);
@@ -17,7 +18,7 @@ export async function makeComplexType(ns: ModuleDeclaration, sd: any) {
     isExported: true,
     docs: [
       {
-        description: sd.description,
+        description: evalText(sd.description, sd),
       },
     ],
   });
@@ -67,7 +68,7 @@ export async function makeComplexType(ns: ModuleDeclaration, sd: any) {
       statements: [`this._content['${name}'] = value;`],
       docs: [
         {
-          description: el.definition || el.name,
+          description: evalText(el.definition || el.name, sd),
         },
       ],
     });
