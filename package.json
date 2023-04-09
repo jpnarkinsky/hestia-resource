@@ -37,7 +37,8 @@
     "@types/inflected": "^1.1.29",
     "@types/ini": "^1.3.31",
     "@types/jest": "^29.5.0",
-    "@types/node": "^18.13.0",
+    "@types/node": "^18.15.11",
+    "@types/prettier": "^2.7.2",
     "@types/unzip-stream": "^0.3.1",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
@@ -57,10 +58,14 @@
   },
   "type": "module",
   "dependencies": {
+    "@types/death": "^1.1.2",
     "@types/debug": "^4.1.7",
+    "death": "^1.1.0",
     "debug": "^4.3.4",
     "fhirpath": "^3.3.2",
     "inflected": "^2.1.0",
-    "luxon": "^3.3.0"
+    "luxon": "^3.3.0",
+    "prettier": "^2.8.7",
+    "prettier-plugin-jsdoc": "^0.4.2"
   }
 }

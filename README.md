@@ -17,5 +17,6 @@ This is component handles FHIR resources in Typescript and I think it will offer
 5. In the longer term, I'd ike to implement FHIR mapping support. Tightly integrated, of course.
 6. Despite being fully typed, we strive to be the easiest FHIR API to learn AND to use.
 7. I'm doing this so that, next, I can implement a full fledged FHIR server with end-to-end type safety and without the pain of Java or .NET.
+8. Comprehensive generated documentation for all artifacts.
 
 This is strictly alpha quality software at this point -- but keep watching.

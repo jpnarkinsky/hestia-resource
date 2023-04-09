@@ -1,10 +1,12 @@
+import fhirpath from "fhirpath";
 import { ModuleDeclaration } from "ts-morph";
 import { makePrimitiveType } from "./make-primitive-type";
 import { makeComplexType } from "./make-complex-type";
-import { makeResource } from "./make-resource";
+import { classes } from "./seeds";
 import registry from "./registry";
 
 import { default as dbg } from "debug";
+import { assert } from "console";
 const debug = dbg(`hestia:resource:generate`);
 
 /**
@@ -12,22 +14,42 @@ const debug = dbg(`hestia:resource:generate`);
  *
  * @param ns the namespace to put everything in
  * @param structures a list of structures
- * @param structureDefinition the current structure definition
+ * @param definition the current structure definition
  * @returns {undefined}
  */
 export async function makeStructure(
   ns: ModuleDeclaration,
-  structureDefinition: any
+  structures: Array<any>,
+  definition: any
 ) {
-  registry[structureDefinition.url] = structureDefinition.id;
+  if (registry[definition.url]) {
+    return;
+  }
 
-  switch (structureDefinition.kind) {
+  registry[definition.url] = definition.id;
+
+  if (definition.baseDefinition) {
+    const baseClass = registry[definition.baseDefinition];
+    if (!baseClass) {
+      const sd = structures.find((i) => i.url == definition.baseDefinition);
+      await makeStructure(ns, structures, sd);
+    }
+  }
+
+  const seed = classes.find((i) => i.name == definition.id);
+  if (seed !== undefined) {
+    return ns.addClass(seed);
+  }
+
+  switch (definition.kind) {
     case "primitive-type":
-      return await makePrimitiveType(ns, structureDefinition);
+      return await makePrimitiveType(ns, definition);
     case "complex-type":
-      return await makeComplexType(ns, structureDefinition);
+      return await makeComplexType(ns, definition);
     case "resource":
-      return await makeResource(ns, structureDefinition);
+      return await makeComplexType(ns, definition);
+    default:
+      throw new Error(`Unrecognized structure kind: ${definition.kind}`);
   }
   return;
 }

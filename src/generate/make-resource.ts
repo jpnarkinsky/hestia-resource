@@ -1,10 +1,10 @@
 import fhirpath from "fhirpath";
 import { ModuleDeclaration } from "ts-morph";
-import { classify } from "inflected";
+import { camelize } from "inflected";
 
 export async function makeResource(ns: ModuleDeclaration, definition: any) {
   const cls = ns.addClass({
-    name: classify(definition.id),
+    name: camelize(definition.id),
   });
 
   cls.addProperty({
