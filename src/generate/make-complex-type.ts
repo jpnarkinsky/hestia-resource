@@ -1,15 +1,15 @@
 import fhirpath from "fhirpath";
 import { getValueType } from "./types";
-import { ModuleDeclaration } from "ts-morph";
-import registry from "./registry";
+import { ModuleDeclaration, Scope } from "ts-morph";
 import { camelize } from "inflected";
 import { evalText } from "./eval-text";
+import { basename } from "path";
 
 const getDefinitionElements = fhirpath.compile("differential.element");
 const getElementValueType = fhirpath.compile(`type.code`);
 
 export async function makeComplexType(ns: ModuleDeclaration, sd: any) {
-  let baseClass = registry[sd.baseDefinition];
+  const baseClass = sd.baseDefinition ? basename(sd.baseDefinition) : undefined;
 
   const cls = ns.addClass({
     name: camelize(sd.name).replace("Metum", "MetUM"),
@@ -29,6 +29,16 @@ export async function makeComplexType(ns: ModuleDeclaration, sd: any) {
     isStatic: true,
     initializer: `'${sd.url}'`,
   });
+
+  if (!baseClass) {
+    cls.addProperty({
+      name: "_content",
+      type: "{ [key: string]: TElement }",
+      hasQuestionToken: false,
+      initializer: "{}",
+      scope: Scope.Protected,
+    });
+  }
 
   for (let el of getDefinitionElements(sd).sort((a, b) =>
     a.id > b.id ? 1 : -1

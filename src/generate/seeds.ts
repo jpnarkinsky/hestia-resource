@@ -64,51 +64,51 @@ export const classes: Array<OptionalKind<ClassDeclarationStructure>> = [
       },
     ],
   },
-  {
-    docs: [
-      {
-        description: "Base class for all data elements",
-      },
-    ],
-    extends: "Base",
-    kind: StructureKind.Class,
-    isAbstract: true,
-    name: "Element",
-    properties: [
-      {
-        name: "url",
-        type: "string",
-        isStatic: true,
-        initializer: `'http://hl7.org/fhir/StructureDefinition/Element'`,
-      },
-    ],
-  },
-  {
-    kind: StructureKind.Class,
-    isAbstract: true,
-    name: "DataType",
-    extends: "Element",
-    properties: [
-      {
-        name: "url",
-        type: "string",
-        isStatic: true,
-        initializer: `'http://hl7.org/fhir/StructureDefinition/DataType'`,
-      },
-    ],
-  },
-  {
-    kind: StructureKind.Class,
-    extends: "Base",
-    isAbstract: true,
-    name: "Resource",
-    properties: [
-      {
-        name: "url",
-        type: "string",
-        isStatic: true,
-        initializer: `'http://hl7.org/fhir/StructureDefinition/Resource'`,
-      },
-    ],
-  },
+  // {
+  //   docs: [
+  //     {
+  //       description: "Base class for all data elements",
+  //     },
+  //   ],
+  //   extends: "Base",
+  //   kind: StructureKind.Class,
+  //   isAbstract: true,
+  //   name: "Element",
+  //   properties: [
+  //     {
+  //       name: "url",
+  //       type: "string",
+  //       isStatic: true,
+  //       initializer: `'http://hl7.org/fhir/StructureDefinition/Element'`,
+  //     },
+  //   ],
+  // },
+  // {
+  //   kind: StructureKind.Class,
+  //   isAbstract: true,
+  //   name: "DataType",
+  //   extends: "Element",
+  //   properties: [
+  //     {
+  //       name: "url",
+  //       type: "string",
+  //       isStatic: true,
+  //       initializer: `'http://hl7.org/fhir/StructureDefinition/DataType'`,
+  //     },
+  //   ],
+  // },
+  // {
+  //   kind: StructureKind.Class,
+  //   extends: "Base",
+  //   isAbstract: true,
+  //   name: "Resource",
+  //   properties: [
+  //     {
+  //       name: "url",
+  //       type: "string",
+  //       isStatic: true,
+  //       initializer: `'http://hl7.org/fhir/StructureDefinition/Resource'`,
+  //     },
+  //   ],
+  // },
 ];

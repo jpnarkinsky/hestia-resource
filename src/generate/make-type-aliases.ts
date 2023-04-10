@@ -14,8 +14,9 @@ export function makeTypeAliases(
         fhirpath
           .evaluate(
             structures,
-            `where(kind='primitive-type' or kind='complex-type').name`
+            `where(kind='primitive-type' or kind='complex-type' or kind='datatype').name`
           )
+          .filter((i) => i)
           .map((i) => camelize(i))
           .sort()
           .map((i) => `${i} | ${i}[]`)

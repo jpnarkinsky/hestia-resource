@@ -1,0 +1,7 @@
+{
+  "r5": "http://hl7.org/fhir/definitions.json.zip",
+  "r4b": "http://hl7.org/fhir/r4b/definitions.json.zip",
+  "r4": "http://hl7.org/fhir/r4/definitions.json.zip",
+  "stu3": "http://hl7.org/fhir/stu3/definitions.json.zip",
+  "dstu2": "https://www.hl7.org/fhir/dstu2/validation.json.zip"
+}

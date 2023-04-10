@@ -6,6 +6,7 @@ import Promise from "bluebird";
 import { classes } from "./seeds";
 import fhirpath from "fhirpath";
 import { makeStructure } from "./make-structure";
+import { underscore, camelize } from "inflected";
 
 function finish(status: number, outputFile: string, sourceFile: SourceFile) {
   let text = sourceFile.getFullText();
@@ -42,6 +43,10 @@ interface GenerateOptions {
 export async function generate(options: GenerateOptions) {
   const { outputFile, target, version, structures } = options;
 
+  if (target) {
+    console.log(`Will stop generation after ${target}.`);
+  }
+
   const project = new Project({
     manipulationSettings: {
       indentationText: IndentationText.TwoSpaces,
@@ -55,7 +60,7 @@ export async function generate(options: GenerateOptions) {
   });
 
   const ns = sourceFile.addModule({
-    name: `fhir${version}`,
+    name: camelize(`fhir_${version}`),
   });
 
   // Add the type.  We will be dynamically updating this as we iterate

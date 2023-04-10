@@ -5,7 +5,6 @@ import fhirpath from "fhirpath";
 import unzipStream from "unzip-stream";
 import { decode } from "ini";
 import { createReadStream, existsSync, fstat } from "fs";
-import { log } from "console";
 
 interface LoaderResult {
   version: string;

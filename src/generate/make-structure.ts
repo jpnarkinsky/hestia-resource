@@ -12,44 +12,53 @@ const debug = dbg(`hestia:resource:generate`);
 /**
  * Process a structure and generate the code for it
  *
- * @param ns the namespace to put everything in
- * @param structures a list of structures
- * @param definition the current structure definition
+ * @param ns The namespace to put everything in
+ * @param structures A list of structures
+ * @param sd The current structure definition
  * @returns {undefined}
  */
 export async function makeStructure(
   ns: ModuleDeclaration,
   structures: Array<any>,
-  definition: any
+  sd: any
 ) {
-  if (registry[definition.url]) {
-    return;
+  if (!sd) {
+    throw new Error(`Must provide a structure definition!`);
   }
 
-  registry[definition.url] = definition.id;
+  try {
+    ns.getClassOrThrow(sd.name);
+    return;
+  } catch (error) {
+    if (registry[sd.url]) {
+      return;
+    }
+  }
 
-  if (definition.baseDefinition) {
-    const baseClass = registry[definition.baseDefinition];
+  registry[sd.url] = sd.id;
+
+  if (sd.baseDefinition) {
+    const baseClass = registry[sd.baseDefinition];
     if (!baseClass) {
-      const sd = structures.find((i) => i.url == definition.baseDefinition);
+      const baseDef = structures.find((i) => i.url == sd.baseDefinition);
       await makeStructure(ns, structures, sd);
     }
   }
 
-  const seed = classes.find((i) => i.name == definition.id);
+  const seed = classes.find((i) => i.name == sd.name);
   if (seed !== undefined) {
     return ns.addClass(seed);
   }
 
-  switch (definition.kind) {
+  switch (sd.kind) {
     case "primitive-type":
-      return await makePrimitiveType(ns, definition);
+      return await makePrimitiveType(ns, sd);
     case "complex-type":
-      return await makeComplexType(ns, definition);
+      return await makeComplexType(ns, sd);
     case "resource":
-      return await makeComplexType(ns, definition);
+      return await makeComplexType(ns, sd);
     default:
-      throw new Error(`Unrecognized structure kind: ${definition.kind}`);
+      throw new Error(`Unrecognized structure kind: ${sd.kind}`);
   }
   return;
 }
