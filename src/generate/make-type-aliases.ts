@@ -10,7 +10,7 @@ export function makeTypeAliases(
       name: "TElement",
       isExported: true,
       type:
-        "string | number | boolean | " +
+        "string | string[] | number | number[] | boolean | Resource | Resource[] | " +
         fhirpath
           .evaluate(
             structures,

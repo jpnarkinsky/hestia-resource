@@ -41,7 +41,7 @@ export async function makeStructure(
     const baseClass = registry[sd.baseDefinition];
     if (!baseClass) {
       const baseDef = structures.find((i) => i.url == sd.baseDefinition);
-      await makeStructure(ns, structures, sd);
+      await makeStructure(ns, structures, baseDef);
     }
   }
 
@@ -58,7 +58,9 @@ export async function makeStructure(
     case "resource":
       return await makeComplexType(ns, sd);
     default:
-      throw new Error(`Unrecognized structure kind: ${sd.kind}`);
+      console.error(
+        `Warning: Unrecognized structure kind: ${sd.kind} for ${sd.name}.  Skipped.`
+      );
   }
   return;
 }

@@ -1,9 +1,9 @@
 import fhirpath from "fhirpath";
-import { getValueType } from "./types";
-import { ModuleDeclaration, Scope } from "ts-morph";
-import { camelize } from "inflected";
-import { evalText } from "./eval-text";
+import { camelize, underscore } from "inflected";
 import { basename } from "path";
+import { ModuleDeclaration, Scope } from "ts-morph";
+import { evalText } from "./eval-text";
+import { getValueType } from "./types";
 
 const getDefinitionElements = fhirpath.compile("differential.element");
 const getElementValueType = fhirpath.compile(`type.code`);
@@ -12,7 +12,7 @@ export async function makeComplexType(ns: ModuleDeclaration, sd: any) {
   const baseClass = sd.baseDefinition ? basename(sd.baseDefinition) : undefined;
 
   const cls = ns.addClass({
-    name: camelize(sd.name).replace("Metum", "MetUM"),
+    name: camelize(sd.name.replace(/\W/g, "_")).replace("Metum", "MetUM"),
     extends: baseClass,
     isAbstract: sd.abstract,
     isExported: true,
@@ -59,6 +59,9 @@ export async function makeComplexType(ns: ModuleDeclaration, sd: any) {
       } else {
         valueTypes = valueTypes.map((i) => getValueType(i as string));
       }
+      valueTypes = valueTypes.filter((thing, i, arr) => {
+        return arr.indexOf(arr.find((t) => t.id === thing.id)) === i;
+      });
     } catch {
       console.warn(
         `Couldn't identify value type for element ${el.id} of resource ${sd.id}.  Skipping`
@@ -71,6 +74,11 @@ export async function makeComplexType(ns: ModuleDeclaration, sd: any) {
     }
 
     const name = el.path.replace(/^.*\./, "").replace("[x]", "");
+
+    // skip this if it's already there.
+    if (cls.getSetAccessor(name)) {
+      continue;
+    }
 
     cls.addSetAccessor({
       name,

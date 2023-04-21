@@ -27,7 +27,7 @@ export const classes: Array<OptionalKind<ClassDeclarationStructure>> = [
             description: "Base class for all data elements",
             tags: [
               {
-                tagName: "_content",
+                tagName: "content",
                 text: "{Object} value",
               },
             ],

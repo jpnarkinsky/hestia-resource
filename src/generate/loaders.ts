@@ -1,10 +1,10 @@
 import axios from "axios";
-import { basename } from "path";
+import { basename, extname } from "path";
 import { streamToBuffer } from "@jorgeferrero/stream-to-buffer";
 import fhirpath from "fhirpath";
 import unzipStream from "unzip-stream";
-import { decode } from "ini";
 import { createReadStream, existsSync, fstat } from "fs";
+import Bluebird from "bluebird";
 
 interface LoaderResult {
   version: string;
@@ -39,60 +39,40 @@ export async function loadZip(location: string): Promise<LoaderResult> {
       version: "unknown",
       structures: [],
     };
-    ``;
+
+    let bundles: any[] = [];
 
     stream
       .pipe(unzipStream.Parse())
       .on("entry", async function (entry: any) {
         const filename = basename(entry.path);
-        if (filename === "version.info") {
-          const info = decode(
-            (
-              await streamToBuffer(entry as unknown as NodeJS.ReadableStream)
-            ).toString()
-          );
 
-          result.version =
-            (info.FHIR && info.FHIR.version) ||
-            (info.fhir && info.fhir.version);
-
-          if (!result.version) {
-            console.log(info);
-            throw new Error(`Couldn't extract fhir version`);
-          }
-          if (result.version.startsWith("5")) {
-            result.version = "5";
-          } else if (result.version.startsWith("4.3")) {
-            result.version = "4b";
-          } else if (result.version.startsWith("4")) {
-            result.version = "4";
-          } else if (result.version.startsWith("3")) {
-            result.version = "3";
-          } else if (result.version.startsWith("2")) {
-            result.version = "2";
-          }
-
-          console.log(`Got version of ${result.version}`);
-        } else if (
+        if (
           filename == "profiles-types.json" ||
-          filename == "profiles-resources.json"
+          filename == "profiles-resources.json" ||
+          filename == "dataelements.json"
         ) {
           console.log(`Processing ${entry.path}`);
-          const bundle = JSON.parse(
-            (
-              await streamToBuffer(entry as unknown as NodeJS.ReadableStream)
-            ).toString()
+          bundles.push(
+            streamToBuffer(entry as unknown as NodeJS.ReadableStream)
           );
-
-          for (let structure of fhirpath.evaluate(bundle, "entry.resource")) {
-            result.structures.push(structure);
-          }
         } else {
           entry.autodrain();
           console.error(`Skipped file: ${entry.path}`);
         }
       })
-      .on("end", () => resolve(result))
+      .on("end", async () => {
+        bundles = await Bluebird.map(bundles, (i) =>
+          JSON.parse((i as unknown as NodeJS.ReadableStream).toString())
+        );
+        for (let structure of fhirpath.evaluate(
+          bundles,
+          "Bundle.entry.resource.where(resourceType='StructureDefinition')"
+        )) {
+          result.structures.push(structure);
+        }
+        resolve(result);
+      })
       .on("error", (err: Error) => reject(err));
   });
 

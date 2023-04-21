@@ -47,13 +47,14 @@ program
       }
     }
 
-    const { structures, version } = await loadZip(location);
+    const { structures } = await loadZip(location);
 
+    console.debug(`Got ${structures.length} structures.`);
     await generate({
       outputFile: prepareOutputFile(outputFile, fhirVersion),
+      structures,
       target,
       version: fhirVersion,
-      structures,
     });
   });
 
