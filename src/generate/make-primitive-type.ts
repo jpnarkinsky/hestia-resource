@@ -44,7 +44,7 @@ export async function makePrimitiveType(ns: ModuleDeclaration, sd: any) {
       })[0]
     );
   } catch (error) {
-    valueType = "unknown";
+    valueType = "String";
   }
 
   cls.addSetAccessor({

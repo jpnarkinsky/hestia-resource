@@ -22005,16 +22005,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/base64Binary";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /** Base StructureDefinition for boolean Type: Value of "true" or "false" */
@@ -22022,16 +22022,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/boolean";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /** Base StructureDefinition for string Type: A sequence of Unicode characters */
@@ -22039,16 +22039,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/string";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22060,16 +22060,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/code";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22081,16 +22081,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/date";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22105,16 +22105,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/dateTime";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22125,16 +22125,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/decimal";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22146,16 +22146,16 @@ namespace FhirStu3 {
   class Id extends Element {
     static canonicalUrl: string = "http://hl7.org/fhir/StructureDefinition/id";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22166,16 +22166,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/instant";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /** Base StructureDefinition for integer Type: A whole number */
@@ -22183,16 +22183,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/integer";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22203,16 +22203,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/markdown";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22222,32 +22222,32 @@ namespace FhirStu3 {
   class Uri extends Element {
     static canonicalUrl: string = "http://hl7.org/fhir/StructureDefinition/uri";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /** Base StructureDefinition for oid type: An OID represented as a URI */
   class Oid extends Element {
     static canonicalUrl: string = "http://hl7.org/fhir/StructureDefinition/oid";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22258,16 +22258,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/positiveInt";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22278,16 +22278,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/time";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /**
@@ -22298,16 +22298,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/unsignedInt";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /** Base StructureDefinition for uuid type: A UUID, represented as a URI */
@@ -22315,16 +22315,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/uuid";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /** Base StructureDefinition for xhtml Type */
@@ -22332,16 +22332,16 @@ namespace FhirStu3 {
     static canonicalUrl: string =
       "http://hl7.org/fhir/StructureDefinition/xhtml";
 
-    set value(value) {
+    set value(value: String) {
       this.validate(value);
       this._content["value"] = value;
     }
 
-    get value() {
-      return this._content["value"] as undefined;
+    get value(): String {
+      return this._content["value"] as String;
     }
 
-    validate(value) {}
+    validate(value: String) {}
   }
 
   /** Base StructureDefinition for Address Type */
