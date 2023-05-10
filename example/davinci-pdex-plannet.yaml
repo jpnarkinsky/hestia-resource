@@ -13,8 +13,8 @@
 # * A resolvable path to the base directory of a standard FHIR
 #   package.  For example, in a project using FSH and the publisher
 #   from HL7, this would be the "/output" directory.
-# * A package name (which will be pulled from the packages.fhir.org server
-#   and therefore MUST exist there.
+# * A package name (which will be pulled from the packages.fhir.org
+#   server and therefore MUST exist there.
 # * A URL which MUST contain the contents of an NPM package
 #
 # Note that there are some additional requirements that will be checked
@@ -38,7 +38,7 @@ packages:
 # the profiles you need.
 #
 features:
-  # If true (default) create enumerated types for all required codesystems.
+  # If true (default) create enumerated types for all required code systems.
   # This is mighty helpful for preventing errors when hard-coding systems
   # and codes.
   codeSystemEnums: true
@@ -49,7 +49,7 @@ features:
 # these can refer to "base" FHIR artifacts (e.g. "Practitioner" vs
 # "plannet-Practitioner") and in many cases that might be helpful.
 #
-# Be aware that we will use this list to construct a list of types and codesystems required
+# Be aware that we will use this list to construct a list of types and code systems required
 # as well, so this can dramatically reduce the size of your generated code.
 #
 # The strings provided will be specific to your target implementation guide/package, and
