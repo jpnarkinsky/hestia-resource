@@ -1,4 +1,6 @@
 import { z } from "zod";
+import yaml from "js-yaml";
+import fs from "fs/promises";
 
 const configSchema = z.object({
   packages: z.string().array().default([]),
@@ -13,7 +15,7 @@ const configSchema = z.object({
 
 type schema = z.infer<typeof configSchema>;
 
-class Configuration {
+export class Configuration {
   private data: schema;
   private static instance?: Configuration;
 
@@ -25,11 +27,21 @@ class Configuration {
     }
   }
 
-  public static get loaded(): Configuration {
+  public static get data(): schema {
     if (!Configuration.instance) {
       Configuration.instance = new Configuration();
     }
 
+    return Configuration.instance.data;
+  }
+
+  public static from(data: schema): Configuration {
+    Configuration.instance = new Configuration(data);
     return Configuration.instance;
+  }
+
+  public static async fromFile(filename: string): Promise<Configuration> {
+    const data = yaml.load((await fs.readFile(filename)).toString());
+    return Configuration.from(data);
   }
 }
