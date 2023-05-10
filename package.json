@@ -65,6 +65,7 @@
   "dependencies": {
     "@types/death": "^1.1.2",
     "@types/debug": "^4.1.7",
+    "@types/fhir": "^0.0.37",
     "death": "^1.1.0",
     "debug": "^4.3.4",
     "fhirpath": "^3.3.2",

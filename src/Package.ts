@@ -14,6 +14,11 @@ type PackageIndexEntry = {
   type: string;
 };
 
+class PackageResourceTypeError extends Error {
+  constructor(expected, received) {
+    super(`Expected resource of type ${expected}, get ${received}`);
+  }
+}
 export class Package {
   static fromStream = async function (stream): Promise<Package> {
     let path = (await new Promise(function (resolve, reject) {
@@ -46,16 +51,29 @@ export class Package {
     private content: { [id: string]: PackageIndexEntry }
   ) {}
 
-  async getById(id: string): Promise<any> {
+  async getStructureById(
+    id: string
+  ): Promise<fhir5.StructureDefinition | null> {
     if (!this.content[id]) {
-      return undefined;
+      return null;
     }
 
     const structureDefinition = readFileSync(
       join(this.path, "package", this.content[id].filename)
     );
 
-    return JSON.parse(structureDefinition.toString());
+    const result = JSON.parse(
+      structureDefinition.toString()
+    ) as fhir5.StructureDefinition;
+
+    if (result.resourceType != "StructureDefinition") {
+      throw new PackageResourceTypeError(
+        `StructureDefinition`,
+        result.resourceType
+      );
+    }
+
+    return result;
   }
 
   list(): string[] {

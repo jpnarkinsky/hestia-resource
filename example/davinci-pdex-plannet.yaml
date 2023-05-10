@@ -1,0 +1,68 @@
+#
+# This configuration file could be used to generate Typescript for
+# the Davinci PDEX Plan Net implementation guide.
+#
+
+#
+# [Required]
+#
+# A list of packages to load.  Order is unimportant for the moment.
+#
+# Items in the list can be any of the following:
+#
+# * A resolvable path to the base directory of a standard FHIR
+#   package.  For example, in a project using FSH and the publisher
+#   from HL7, this would be the "/output" directory.
+# * A package name (which will be pulled from the packages.fhir.org server
+#   and therefore MUST exist there.
+# * A URL which MUST contain the contents of an NPM package
+#
+# Note that there are some additional requirements that will be checked
+# when we process this list, such as the packages specified must have a
+# a FHIR version in common.
+packages:
+  - hl7.fhir.us.davinci-pdex-plan-net@1.1.0
+  # - https://storage.googleapis.com/fhir.caremesh.app/package.tgz
+  # - ../ig-root/output/
+  # - "/Users/patrick/src/ig-root/output/"
+
+#
+# [Optional]
+#
+# This section allows to turn on and off various features in the generated
+# code.  FHIR is a big standard, and if you turn om *everything* you're
+# going to spend a lot of time compiling and downloading things you don't
+# need.
+#
+# See also the "profiles" section below to restrict the generated code to only
+# the profiles you need.
+#
+features:
+  # If true (default) create enumerated types for all required codesystems.
+  # This is mighty helpful for preventing errors when hard-coding systems
+  # and codes.
+  codeSystemEnums: true
+
+#
+# [Optional] Only generate code for the following profiles.  To be effective, these must
+# be found in the implementation guides and packages included above.  Note that
+# these can refer to "base" FHIR artifacts (e.g. "Practitioner" vs
+# "plannet-Practitioner") and in many cases that might be helpful.
+#
+# Be aware that we will use this list to construct a list of types and codesystems required
+# as well, so this can dramatically reduce the size of your generated code.
+#
+# The strings provided will be specific to your target implementation guide/package, and
+# should be the "id" field of the structureDefinition for the profiles you want.
+profiles:
+  - plannet-Practitioner
+  - plannet-Organization
+  - plannet-PractitionerRole
+
+# [Optional]
+#
+# Skip the following items, by ID.  This allows you to further
+# restrict the set of code you're generating.  However, this could
+# cause errors so use it with discretion.
+ignore:
+  - plannet-Endpoint

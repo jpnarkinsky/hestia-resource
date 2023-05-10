@@ -1,5 +1,6 @@
 import { before } from "node:test";
 import { PackageRegistry } from "./PackageRegistry";
+import { Package } from "./Package";
 
 describe("Package", function () {
   let pkg;
@@ -11,5 +12,15 @@ describe("Package", function () {
   test("#list should return a list of profiles", async function () {
     expect(await pkg.list()).not.toHaveLength(0);
     expect(await pkg.list()).toContainEqual("plannet-Endpoint");
+  });
+
+  test("#getById should return a structure definition", async function () {
+    let sd = await pkg.getStructureById("plannet-Practitioner");
+    expect(sd).not.toBeNull;
+  });
+
+  test("#getById should return null on an unknown profile", async function () {
+    let sd = await pkg.getStructureById("foo");
+    expect(sd).toBeNull;
   });
 });
