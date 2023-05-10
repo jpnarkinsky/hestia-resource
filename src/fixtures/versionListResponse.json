@@ -1,0 +1,42 @@
+{
+  "_id": "hl7.fhir.us.davinci-pdex-plan-net",
+  "name": "hl7.fhir.us.davinci-pdex-plan-net",
+  "description": "Davinci PDEX Plan Net (built Mon, Apr 4, 2022 14:01+0000+00:00)",
+  "dist-tags": {
+    "latest": "1.1.0"
+  },
+  "versions": {
+    "0.1.0": {
+      "name": "hl7.fhir.us.davinci-pdex-plan-net",
+      "version": "0.1.0",
+      "description": "None.",
+      "dist": {
+        "shasum": "bcff544e07a6a719a6ab1d99dc6dc09701610981",
+        "tarball": "https://packages.simplifier.net/hl7.fhir.us.davinci-pdex-plan-net/0.1.0"
+      },
+      "fhirVersion": "R4",
+      "url": "https://packages.simplifier.net/hl7.fhir.us.davinci-pdex-plan-net/0.1.0"
+    },
+    "1.0.0": {
+      "name": "hl7.fhir.us.davinci-pdex-plan-net",
+      "version": "1.0.0",
+      "description": "None.",
+      "dist": {
+        "tarball": "https://packages.simplifier.net/hl7.fhir.us.davinci-pdex-plan-net/1.0.0"
+      },
+      "fhirVersion": "R4",
+      "url": "https://packages.simplifier.net/hl7.fhir.us.davinci-pdex-plan-net/1.0.0"
+    },
+    "1.1.0": {
+      "name": "hl7.fhir.us.davinci-pdex-plan-net",
+      "version": "1.1.0",
+      "description": "None.",
+      "dist": {
+        "shasum": "594e92a4554bb4479b969e9ab294a9b5c017688f",
+        "tarball": "https://packages.simplifier.net/hl7.fhir.us.davinci-pdex-plan-net/1.1.0"
+      },
+      "fhirVersion": "R4",
+      "url": "https://packages.simplifier.net/hl7.fhir.us.davinci-pdex-plan-net/1.1.0"
+    }
+  }
+}
