@@ -2,7 +2,7 @@ import { logger } from "./Logger";
 import { Package } from "./Package";
 import { PackageRegistry } from "./PackageRegistry";
 
-class NoSuchProfileError extends Error {
+class NoSuchStructureError extends Error {
   constructor(name: string) {
     super(`Couldn't find any package providing ${name} in the loaded packages`);
   }
@@ -42,11 +42,11 @@ export class StructureRegistry {
       }
     }
 
-    throw new NoSuchProfileError(name);
+    throw new NoSuchStructureError(name);
   }
 
   /**
-   * List all profiles (resources) by name, in any package
+   * List all structures by name, in any package
    *
    * @returns {string[]} The list of profiles
    */
