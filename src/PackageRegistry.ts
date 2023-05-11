@@ -89,8 +89,8 @@ export class PackageRegistry {
    * @returns {Promise<Readable>}
    * @throws {PackageNotUniqueError} Multiple matching packages found
    */
-  async load(name: string, version?: string): Promise<Package> {
-    const url = await this.resolve(name, version);
+  async load(spec: string): Promise<Package> {
+    const url = await this.resolve(spec);
     const { data } = await this.client.get(url, {
       responseType: "stream",
     });
@@ -111,27 +111,30 @@ export class PackageRegistry {
    * Given a tag or semantic version spec, return the appropriate url
    *
    * @param {string} name - The package name
-   * @param {string} spec - The version spec or tag
    * @returns {string} The url for the version
    * @throws {PackageNotFoundError} No matching package found
    */
-  async resolve(name: string, spec?: string): Promise<string> {
-    if (!spec) {
-      spec = "latest";
+  async resolve(spec: string): Promise<string> {
+    let [name, version] = spec.split(/\@/);
+
+    if (!version) {
+      version = "latest";
     }
 
     const { data } = await this.client.get(`/${name}`);
-    if (data["dist-tags"][spec]) {
-      spec = data["dist-tags"][spec];
+
+    // If the desired version is a dist tag, then replace it with the
+    // content of the dist tag.
+    if (data["dist-tags"][version]) {
+      version = data["dist-tags"][version];
     }
 
     for (let v of Object.keys(data.versions).sort((a, b) => (a > b ? 1 : -1))) {
-      let version = data.versions[v];
-      if (semver.satisfies(v, spec as string)) {
-        return version.url;
+      if (semver.satisfies(v, version as string)) {
+        return data.versions[v].url;
       }
     }
 
-    throw new PackageNotFoundError({ name, version: spec });
+    throw new PackageNotFoundError({ name, version });
   }
 }

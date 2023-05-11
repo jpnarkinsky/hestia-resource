@@ -21,7 +21,7 @@
 # when we process this list, such as the packages specified must have a
 # a FHIR version in common.
 packages:
-  - hl7.fhir.us.davinci-pdex-plan-net@1.1.0
+  - hl7.fhir.us.davinci-pdex-plan-net@latest
   # - https://storage.googleapis.com/fhir.caremesh.app/package.tgz
   # - ../ig-root/output/
   # - "/Users/patrick/src/ig-root/output/"

@@ -11,6 +11,7 @@ const configSchema = z.object({
     .optional(),
   profiles: z.string().array().default([]),
   ignore: z.string().array().default([]),
+  generatorName: z.string().default("TypeScript"),
 });
 
 type schema = z.infer<typeof configSchema>;
@@ -35,7 +36,7 @@ export class Configuration {
     return Configuration.instance.data;
   }
 
-  public static from(data: schema): Configuration {
+  public static from(data?: schema): Configuration {
     Configuration.instance = new Configuration(data);
     return Configuration.instance;
   }

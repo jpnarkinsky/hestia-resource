@@ -1,4 +1,5 @@
 import { Package } from "./Package";
+import { PackageRegistry } from "./PackageRegistry";
 import { Profile } from "./Profile";
 
 class NoSuchProfileError extends Error {
@@ -9,6 +10,22 @@ class NoSuchProfileError extends Error {
 
 export class ProfileRegistry {
   public packages: Package[] = [];
+  private pkgRegistry;
+
+  constructor() {
+    this.pkgRegistry = new PackageRegistry();
+  }
+
+  /**
+   * Add a package by name, URL, or path
+   *
+   * @param {string} spec The package spec
+   * @throws {PackageNotFoundError} If package is not found
+   */
+  async addPackage(spec: string) {
+    const p = await this.pkgRegistry.load(spec);
+    this.packages.push(p);
+  }
 
   /**
    * Find a profile matching name in all our packages
