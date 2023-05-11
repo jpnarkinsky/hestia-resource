@@ -4,7 +4,7 @@ import { WriteStream } from "fs";
 import { logger } from "./Logger";
 import { Configuration } from "./Configuration";
 import { PackageRegistry } from "./PackageRegistry";
-import { ProfileRegistry } from "./ProfileRegistry";
+import { StructureRegistry } from "./StructureRegistry";
 
 const program = new Command();
 
@@ -103,9 +103,9 @@ program
       }
     }
 
-    const profileRegistry = new ProfileRegistry();
+    const structureRegistry = new StructureRegistry();
     for (let pkg of config.data.packages) {
-      await profileRegistry.addPackage(pkg);
+      await structureRegistry.addPackage(pkg);
     }
 
     if (!generators[config.data.generatorName]) {
@@ -114,10 +114,11 @@ program
     }
 
     const generator = new generators[config.data.generatorName](
-      profile,
-      profileRegistry,
+      structureRegistry,
       target
     );
+
+    await generator.generate(profile);
   });
 
 program.parseAsync().catch(console.error);

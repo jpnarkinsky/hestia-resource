@@ -1,7 +1,7 @@
 import { createGunzip } from "zlib";
 import tar from "tar-fs";
 import { fstat, mkdtempSync, readFileSync } from "fs";
-import { readFile } from "fs/promises";
+import { mapValues } from "radash";
 import { join } from "path";
 import { tmpdir } from "os";
 
@@ -12,6 +12,7 @@ type PackageIndexEntry = {
   url: string;
   version: string;
   type: string;
+  kind: string;
 };
 
 class PackageResourceTypeError extends Error {
@@ -78,8 +79,24 @@ export class Package {
     return result;
   }
 
+  /**
+   * List contents
+   *
+   * @returns {string[]} Id of all structures in package.
+   */
   list(): string[] {
     return Object.keys(this.content);
+  }
+
+  /**
+   * List profiles
+   *
+   * @returns {string[]} Id of all structures of type "resource" in package
+   */
+  profiles(): string[] {
+    return Object.values(this.content)
+      .filter(({ kind }) => kind == "resource")
+      .map((i) => i.id);
   }
 
   get metadata(): any {

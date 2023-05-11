@@ -1,12 +1,21 @@
-import { ProfileRegistry } from "src/ProfileRegistry";
+import { StructureRegistry } from "src/StructureRegistry";
 import { Writable } from "stream";
 
 export abstract class Generator {
   constructor(
-    protected profiles: string[],
-    protected profileRegistry: ProfileRegistry,
+    protected structureRegistry: StructureRegistry,
     protected target: Buffer | Writable | string
   ) {}
+
+  async generate(profiles) {
+    if (!profiles || profiles.length == 0) {
+      profiles = this.structureRegistry.profiles();
+    }
+
+    for (let profile of profiles) {
+      console.log(profile);
+    }
+  }
 
   async push(code: string): Promise<undefined> {
     if (this.target.constructor instanceof Buffer) {

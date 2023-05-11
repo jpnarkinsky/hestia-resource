@@ -1,7 +1,6 @@
 import { logger } from "./Logger";
 import { Package } from "./Package";
 import { PackageRegistry } from "./PackageRegistry";
-import { Profile } from "./Profile";
 
 class NoSuchProfileError extends Error {
   constructor(name: string) {
@@ -9,7 +8,7 @@ class NoSuchProfileError extends Error {
   }
 }
 
-export class ProfileRegistry {
+export class StructureRegistry {
   public packages: Package[] = [];
   private pkgRegistry;
 
@@ -30,19 +29,41 @@ export class ProfileRegistry {
   }
 
   /**
-   * Find a profile matching name in all our packages
+   * Find a structure matching name in all our packages
    *
    * @param {string} name The name of the profile to search for
-   * @returns {Profile} The profile
+   * @returns {Structure} The structure
    */
-  find(name: string): Profile {
+  find(name: string): fhir5.StructureDefinition {
     for (let pkg of this.packages) {
-      const profile = pkg.getStructureById(name);
-      if (profile) {
-        return profile;
+      const sd = pkg.getStructureById(name);
+      if (sd) {
+        return sd as unknown as fhir5.StructureDefinition;
       }
     }
 
     throw new NoSuchProfileError(name);
+  }
+
+  /**
+   * List all profiles (resources) by name, in any package
+   *
+   * @returns {string[]} The list of profiles
+   */
+  list(): string[] {
+    return Array.from(
+      new Set(this.packages.map((i) => i.list()).flat())
+    ).sort();
+  }
+
+  /**
+   * List all profiles (resources) by name, in any package
+   *
+   * @returns {string[]} The list of profiles
+   */
+  profiles(): string[] {
+    return Array.from(
+      new Set(this.packages.map((i) => i.profiles()).flat())
+    ).sort();
   }
 }
