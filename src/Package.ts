@@ -1,7 +1,6 @@
 import { createGunzip } from "zlib";
 import tar from "tar-fs";
 import { fstat, mkdtempSync, readFileSync } from "fs";
-import { mapValues } from "radash";
 import { join } from "path";
 import { tmpdir } from "os";
 

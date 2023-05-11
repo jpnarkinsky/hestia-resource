@@ -3,7 +3,6 @@ import generators from "./generators";
 import { WriteStream } from "fs";
 import { logger } from "./Logger";
 import { Configuration } from "./Configuration";
-import { PackageRegistry } from "./PackageRegistry";
 import { StructureRegistry } from "./StructureRegistry";
 
 const program = new Command();
