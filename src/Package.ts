@@ -1,6 +1,6 @@
 import { createGunzip } from "zlib";
 import tar from "tar-fs";
-import { mkdtempSync, readFileSync } from "fs";
+import { fstat, mkdtempSync, readFileSync } from "fs";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { tmpdir } from "os";
@@ -20,6 +20,8 @@ class PackageResourceTypeError extends Error {
   }
 }
 export class Package {
+  _metadata?: any;
+
   static fromStream = async function (stream): Promise<Package> {
     let path = (await new Promise(function (resolve, reject) {
       // Create a temporary directory exclusive to this package
@@ -78,5 +80,23 @@ export class Package {
 
   list(): string[] {
     return Object.keys(this.content);
+  }
+
+  get metadata(): any {
+    if (!this._metadata) {
+      this._metadata = JSON.parse(
+        readFileSync(join(this.path, "package", "package.json")).toString()
+      );
+    }
+
+    return this._metadata;
+  }
+
+  get name(): string {
+    return this.metadata.name;
+  }
+
+  get version(): string {
+    return this.metadata.version;
   }
 }

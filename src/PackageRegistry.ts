@@ -1,5 +1,6 @@
 import { Axios, default as axios } from "axios";
 import { Package } from "./Package";
+import { logger } from "./Logger";
 import semver from "semver";
 
 import dbg from "debug";
@@ -131,6 +132,7 @@ export class PackageRegistry {
 
     for (let v of Object.keys(data.versions).sort((a, b) => (a > b ? 1 : -1))) {
       if (semver.satisfies(v, version as string)) {
+        logger.info(`Resolved ${spec} to version ${v}`);
         return data.versions[v].url;
       }
     }

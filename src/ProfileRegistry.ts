@@ -1,3 +1,4 @@
+import { logger } from "./Logger";
 import { Package } from "./Package";
 import { PackageRegistry } from "./PackageRegistry";
 import { Profile } from "./Profile";
@@ -25,6 +26,7 @@ export class ProfileRegistry {
   async addPackage(spec: string) {
     const p = await this.pkgRegistry.load(spec);
     this.packages.push(p);
+    logger.info(`Registered package ${p.name}@${p.version}`);
   }
 
   /**
