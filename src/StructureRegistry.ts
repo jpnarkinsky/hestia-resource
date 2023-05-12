@@ -1,3 +1,4 @@
+import { ThisExpression } from "ts-morph";
 import { logger } from "./Logger";
 import { Package } from "./Package";
 import { PackageRegistry } from "./PackageRegistry";
@@ -23,8 +24,25 @@ export class StructureRegistry {
    * @throws {PackageNotFoundError} If package is not found
    */
   async addPackage(spec: string) {
+    const [name, version] = spec.split(/@/);
+
+    if (this.packages.find((i) => i.name == name)) {
+      return;
+    }
+
     const p = await this.pkgRegistry.load(spec);
     this.packages.push(p);
+
+    if (p.dependencies) {
+      for (let [name, version] of Object.entries(p.dependencies)) {
+        if (version) {
+          await this.addPackage(`${name}@${version}`);
+        } else {
+          await this.addPackage(name);
+        }
+      }
+    }
+
     logger.info(`Registered package ${p.name}@${p.version}`);
   }
 

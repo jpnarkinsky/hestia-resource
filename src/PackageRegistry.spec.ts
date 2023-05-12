@@ -49,14 +49,16 @@ describe("PackageRegistry", function () {
     });
 
     it("should be able to resolve the latest version of plan net", async function () {
-      const url = await registry.resolve("hl7.fhir.us.davinci-pdex-plan-net");
+      const { url } = await registry.resolve(
+        "hl7.fhir.us.davinci-pdex-plan-net"
+      );
       expect(url).toEqual(
         "https://packages.simplifier.net/hl7.fhir.us.davinci-pdex-plan-net/1.1.0"
       );
     });
 
     it("Should be able to resolve a specific version of plan net", async function () {
-      const url = await registry.resolve(
+      const { url } = await registry.resolve(
         "hl7.fhir.us.davinci-pdex-plan-net@0.1.0"
       );
       expect(url).toEqual(

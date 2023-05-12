@@ -1,9 +1,11 @@
 import { Command, Option } from "commander";
 import generators from "./generators";
-import { WriteStream } from "fs";
+import { createWriteStream } from "fs";
 import { logger } from "./Logger";
 import { Configuration } from "./Configuration";
 import { StructureRegistry } from "./StructureRegistry";
+import { PackageRegistry } from "./PackageRegistry";
+import Promise from "bluebird";
 
 const program = new Command();
 
@@ -92,14 +94,32 @@ program
 
     let targetStream;
     if (target == "-") {
+      logger.info(`Sending output to stdout`);
       targetStream = process.stdout;
     } else {
       try {
-        targetStream = new WriteStream(target);
+        targetStream = createWriteStream(target);
       } catch (error: any) {
         logger.error(`Couldn't open ${target} for writing: ${error.message}`);
         process.exit(1);
       }
+    }
+
+    // If no profiles are specified, default to generating all profiles
+    // in the requested packages.
+    if (!profile || profile.length == 0) {
+      const packageRegistry = new PackageRegistry();
+      profile = (
+        await Promise.map(config.data.packages, (i: string) =>
+          packageRegistry.load(i)
+        )
+      )
+        .map((i) => i.profiles())
+        .flat();
+
+      logger.info(
+        `Will generate the following profiles: ${profile.join(", ")}.`
+      );
     }
 
     const structureRegistry = new StructureRegistry();
@@ -114,10 +134,14 @@ program
 
     const generator = new generators[config.data.generatorName](
       structureRegistry,
-      target
+      targetStream
     );
 
     await generator.generate(profile);
+    await new Promise((resolve, reject) => {
+      targetStream.on("error", reject);
+      targetStream.end(resolve);
+    });
   });
 
 program.parseAsync().catch(console.error);

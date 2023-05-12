@@ -91,11 +91,11 @@ export class PackageRegistry {
    * @throws {PackageNotUniqueError} Multiple matching packages found
    */
   async load(spec: string): Promise<Package> {
-    const url = await this.resolve(spec);
+    const { url, fhirVersion } = await this.resolve(spec);
     const { data } = await this.client.get(url, {
       responseType: "stream",
     });
-    return Package.fromStream(data);
+    return Package.fromStream(fhirVersion, data);
   }
 
   /** Get the available versions of the specified package name */
@@ -115,7 +115,7 @@ export class PackageRegistry {
    * @returns {string} The url for the version
    * @throws {PackageNotFoundError} No matching package found
    */
-  async resolve(spec: string): Promise<string> {
+  async resolve(spec: string): Promise<PackageRegistryPackageVersion> {
     let [name, version] = spec.split(/\@/);
 
     if (!version) {
@@ -132,8 +132,7 @@ export class PackageRegistry {
 
     for (let v of Object.keys(data.versions).sort((a, b) => (a > b ? 1 : -1))) {
       if (semver.satisfies(v, version as string)) {
-        logger.info(`Resolved ${spec} to version ${v}`);
-        return data.versions[v].url;
+        return data.versions[v];
       }
     }
 

@@ -1,6 +1,4 @@
-import { before } from "node:test";
 import { PackageRegistry } from "./PackageRegistry";
-import { Package } from "./Package";
 
 describe("Package", function () {
   let pkg;
