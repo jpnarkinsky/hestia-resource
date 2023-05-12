@@ -1,7 +1,6 @@
 import { StructureRegistry } from "src/StructureRegistry";
 import { Writable } from "stream";
 import { logger } from "../Logger";
-import fhirpath from "fhirpath";
 import Handlebars from "handlebars";
 
 export abstract class Generator {
