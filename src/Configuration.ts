@@ -8,7 +8,7 @@ const configSchema = z.object({
     .object({
       codeSystemEnums: z.boolean().optional().default(true),
     })
-    .optional(),
+    .default({}),
   profiles: z.string().array().default([]),
   ignore: z.string().array().default([]),
   generatorName: z.string().default("TypeScript"),
@@ -24,7 +24,7 @@ export class Configuration {
     if (data) {
       this.data = data;
     } else {
-      this.data = configSchema.parse(undefined);
+      this.data = configSchema.parse({});
     }
   }
 

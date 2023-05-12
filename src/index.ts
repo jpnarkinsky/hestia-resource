@@ -6,6 +6,7 @@ import { Configuration } from "./Configuration";
 import { StructureRegistry } from "./StructureRegistry";
 import { PackageRegistry } from "./PackageRegistry";
 import Promise from "bluebird";
+import { unique } from "radash";
 
 const program = new Command();
 
@@ -41,7 +42,7 @@ program
   )
   .addOption(
     new Option(
-      "-P,--package [...pkg]",
+      "-P,--pkg [...pkg]",
       "Import the specified FHIR package (path, URL, or name)"
     )
   )
@@ -79,12 +80,15 @@ program
     }
 
     if (pkg) {
-      config.data.packages = config.data.packages.concat(pkg).sort().uniq();
+      unique((config.data.packages = config.data.packages.concat(pkg).sort()));
     }
 
     if (profile) {
+      if (!Array.isArray(profile)) {
+        profile = [profile];
+      }
       logger.info(
-        `Limiting generation to the following profile: ${profile.join(", ")}`
+        `Limiting generation to the following profiles: ${profile.join(", ")}`
       );
     }
 
@@ -108,6 +112,9 @@ program
     // If no profiles are specified, default to generating all profiles
     // in the requested packages.
     if (!profile || profile.length == 0) {
+      // Because we don't (yet) have a structureRegistry, it
+      // is necessary to manually call to PackageRegistry.  Since
+      // we only load a package once, this doesn't cost us anything.
       const packageRegistry = new PackageRegistry();
       profile = (
         await Promise.map(config.data.packages, (i: string) =>

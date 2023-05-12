@@ -58,8 +58,11 @@ export class StructureRegistry {
         if (sd) {
           return sd;
         }
-      } catch (error) {
-        continue;
+      } catch (err) {
+        if (err instanceof NoSuchStructureError) {
+          continue;
+        }
+        throw err;
       }
     }
 

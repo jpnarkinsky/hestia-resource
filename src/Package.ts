@@ -42,20 +42,15 @@ export class Package {
     return new Package(fhirVersion, path as string, content);
   };
 
-  static parseIndex(index: Buffer): { [id: string]: PackageIndexEntry } {
+  static parseIndex(index: Buffer): Array<PackageIndexEntry> {
     const idx = JSON.parse(index.toString());
-    let result = idx.files.reduce((prev, curr) => {
-      prev[curr.id] = curr;
-      prev[curr.url] = curr;
-      return prev;
-    }, {});
-    return result;
+    return idx.files;
   }
 
   constructor(
     public fhirVersion: PackageRegistryFHIRVersion,
     private path: string,
-    private content: { [id: string]: PackageIndexEntry }
+    private content: Array<PackageIndexEntry>
   ) {}
 
   /** @returns {Object} Object of package names and versions required */
@@ -66,24 +61,21 @@ export class Package {
   async getStructureById(
     id: string
   ): Promise<fhir5.StructureDefinition | null> {
-    if (!this.content[id]) {
+    const entry = this.content.find(
+      (i) => i.resourceType == "StructureDefinition" && i.id == id
+    );
+
+    if (!entry) {
       return null;
     }
 
     const structureDefinition = readFileSync(
-      join(this.path, "package", this.content[id].filename)
+      join(this.path, "package", entry.filename)
     );
 
     const result = JSON.parse(
       structureDefinition.toString()
     ) as fhir5.StructureDefinition;
-
-    if (result.resourceType != "StructureDefinition") {
-      throw new PackageResourceTypeError(
-        `StructureDefinition`,
-        result.resourceType
-      );
-    }
 
     return result;
   }

@@ -159,16 +159,6 @@ export class TypeScript extends Generator {
       }
     }
 
-    // let baseClass;
-    // if (sd.baseDefinition) {
-    //   const baseSD = sd.baseDefinition;
-    //   const structure = await this.structureRegistry.find(baseSD);
-    //   if (!structure) {
-    //     throw new Error(`Couldn't find structure with id ${baseSD}`);
-    //   }
-    //   baseClass = await this.generateStructure(structure);
-    // }
-
     const inter = this.ns?.addInterface({ name: `I${className}` });
     const cls = this.addClass(sd.id, {
       name: camelize(sd.name.replace(/\W/g, "_")).replace("Metum", "MetUM"),

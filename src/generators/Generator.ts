@@ -19,10 +19,6 @@ export abstract class Generator {
       try {
         const structure = await this.structureRegistry.find(id);
 
-        if (!structure) {
-          throw new Error(`Structure not found: ${id}`);
-        }
-
         switch (structure?.kind) {
           case "primitive-type":
           case "complex-type":
@@ -35,8 +31,9 @@ export abstract class Generator {
             );
         }
       } catch (error: any) {
-        logger.error(error.message);
-        throw error;
+        logger.warn(
+          `Failed to generate profile with id ${id} due to error: ${error.message}`
+        );
       }
     }
   }
