@@ -20,8 +20,8 @@ program
   )
   .addOption(
     new Option(
-      "-t,--target [target]",
-      "Specify an target file (defaults to stdout)"
+      "-o,--output [output]",
+      "Specify an output file (defaults to stdout)"
     ).default("-")
   )
   .addOption(
@@ -48,10 +48,10 @@ program
   .argument("[config-file]")
   .action(async function (
     configFile,
-    { generatorName, enableFeature, disableFeature, pkg, profile, skip, target }
+    { generatorName, enableFeature, disableFeature, pkg, profile, skip, output }
   ) {
     logger.info(
-      `Will generate from ${configFile} with ${generatorName} to ${target}`
+      `Will generate from ${configFile} with ${generatorName} to ${output}`
     );
 
     let config;
@@ -93,14 +93,14 @@ program
     }
 
     let targetStream;
-    if (target == "-") {
+    if (output == "-") {
       logger.info(`Sending output to stdout`);
       targetStream = process.stdout;
     } else {
       try {
-        targetStream = createWriteStream(target);
+        targetStream = createWriteStream(output);
       } catch (error: any) {
-        logger.error(`Couldn't open ${target} for writing: ${error.message}`);
+        logger.error(`Couldn't open ${output} for writing: ${error.message}`);
         process.exit(1);
       }
     }
@@ -133,15 +133,11 @@ program
     }
 
     const generator = new generators[config.data.generatorName](
-      structureRegistry,
-      targetStream
+      structureRegistry
     );
 
     await generator.generate(profile);
-    await new Promise((resolve, reject) => {
-      targetStream.on("error", reject);
-      targetStream.end(resolve);
-    });
+    await generator.dump(targetStream);
   });
 
 program.parseAsync().catch(console.error);

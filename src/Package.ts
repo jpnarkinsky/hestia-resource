@@ -4,6 +4,7 @@ import { fstat, mkdtempSync, readFileSync } from "fs";
 import { join } from "path";
 import { tmpdir } from "os";
 import { PackageRegistryFHIRVersion } from "./PackageRegistry";
+import { logger } from "./Logger";
 
 type PackageIndexEntry = {
   filename: string;
@@ -43,10 +44,12 @@ export class Package {
 
   static parseIndex(index: Buffer): { [id: string]: PackageIndexEntry } {
     const idx = JSON.parse(index.toString());
-    return idx.files.reduce((prev, curr) => {
+    let result = idx.files.reduce((prev, curr) => {
       prev[curr.id] = curr;
+      prev[curr.url] = curr;
       return prev;
     }, {});
+    return result;
   }
 
   constructor(

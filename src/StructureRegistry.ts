@@ -1,4 +1,3 @@
-import { ThisExpression } from "ts-morph";
 import { logger } from "./Logger";
 import { Package } from "./Package";
 import { PackageRegistry } from "./PackageRegistry";
@@ -24,7 +23,7 @@ export class StructureRegistry {
    * @throws {PackageNotFoundError} If package is not found
    */
   async addPackage(spec: string) {
-    const [name, version] = spec.split(/@/);
+    const [name] = spec.split(/@/);
 
     if (this.packages.find((i) => i.name == name)) {
       return;
@@ -52,11 +51,15 @@ export class StructureRegistry {
    * @param {string} name The name of the profile to search for
    * @returns {Structure} The structure
    */
-  find(name: string): fhir5.StructureDefinition {
+  async find(name: string): Promise<fhir5.StructureDefinition> {
     for (let pkg of this.packages) {
-      const sd = pkg.getStructureById(name);
-      if (sd) {
-        return sd as unknown as fhir5.StructureDefinition;
+      try {
+        const sd = await pkg.getStructureById(name);
+        if (sd) {
+          return sd;
+        }
+      } catch (error) {
+        continue;
       }
     }
 

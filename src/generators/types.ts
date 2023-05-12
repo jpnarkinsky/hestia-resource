@@ -25,4 +25,3 @@ export function getValueType(url: string) {
     return camelize(url).replace("Metum", "MetUM");
   }
 }
-
