@@ -4,6 +4,8 @@ TODO: Add build status
 
 </div>
 
+This is an alpha Typescript compiler for FHIR Implementation Guides.  This will allow you to use strongly typed, rich Typescript objects to construct FHIR resources.  When complete, it should make it all but impossible to create an incorrect resource.
+
 # What is this?
 
 This `hestia-resource`. It is the first major component of the Hestia system, which as of this date is under active development. The goal of this project is simple: to provide the finest environment on any platform for working with FHIR data.
