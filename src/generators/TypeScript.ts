@@ -331,12 +331,4 @@ export class TypeScript extends Generator {
     });
     return className;
   }
-
-  async dump(target: string | Buffer | Writable): Promise<undefined> {
-    if (!this.sourceFile) {
-      throw new Error(`Can't dump before initializing!`);
-    }
-
-    return await this.write(target, this.sourceFile.getFullText());
-  }
 }
