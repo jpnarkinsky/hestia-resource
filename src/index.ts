@@ -14,15 +14,15 @@ program
   .addOption(
     new Option(
       "-g,--generator-name [generator-name]",
-      "Use a different generate (defaults to TypeScript)"
+      "Use a different generate (defaults to Javascript)"
     )
       .choices(Object.keys(generators))
-      .default("TypeScript")
+      .default("Javascript")
   )
   .addOption(
     new Option(
       "-o,--output [output]",
-      "Specify an output file (defaults to stdout)"
+      "Specify an output path (defaults to stdout)"
     ).default("-")
   )
   .addOption(
@@ -96,19 +96,6 @@ program
       logger.info(`Skipping some structures: ${skip.join(", ")}`);
     }
 
-    let targetStream;
-    if (output == "-") {
-      logger.info(`Sending output to stdout`);
-      targetStream = process.stdout;
-    } else {
-      try {
-        targetStream = createWriteStream(output);
-      } catch (error: any) {
-        logger.error(`Couldn't open ${output} for writing: ${error.message}`);
-        process.exit(1);
-      }
-    }
-
     // If no profiles are specified, default to generating all profiles
     // in the requested packages.
     if (!profile || profile.length == 0) {
@@ -140,11 +127,12 @@ program
     }
 
     const generator = new generators[config.data.generatorName](
-      structureRegistry
+      structureRegistry,
+      output,
     );
 
     await generator.generate(profile);
-    await generator.dump(targetStream);
+    await generator.emit();
   });
 
 program.parseAsync().catch(console.error);

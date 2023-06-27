@@ -5,7 +5,7 @@ describe("Configuration", function () {
     let config: Configuration;
     beforeAll(function () {
       config = Configuration.from({
-        generatorName: "TypeScript",
+        generatorName: "Javascript",
         packages: ["hl7.fhir.us.davinci-pdex-plan-net@1.1.0"],
         features: {
           codeSystemEnums: true,

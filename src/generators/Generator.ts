@@ -1,7 +1,7 @@
 import { StructureRegistry } from "src/StructureRegistry";
-import { Writable } from "stream";
 import { logger } from "../Logger";
 import Handlebars from "handlebars";
+import {lstatSync, mkdirSync} from 'fs';
 
 export abstract class Generator {
   protected processed = new Set();
@@ -9,8 +9,20 @@ export abstract class Generator {
 
   constructor(
     protected structureRegistry: StructureRegistry,
-    protected target: Buffer | Writable | string
-  ) {}
+    protected output: string,
+  ) {
+    try {
+      let stats =  lstatSync(output);
+
+      if (!stats.isDirectory()) {
+        throw new Error(`${output} already exists and it's not a directory!`)
+      }
+    } catch(error) {
+      logger.info(`${output} doesn't exist.  Creating.`);
+      mkdirSync(output);
+    }
+  }
+  
 
   async generate(ids: string[]) {
     await this.initialize();
@@ -54,6 +66,9 @@ export abstract class Generator {
   }
 
   // Abstract methods
-  abstract initialize(): Promise<undefined>;
+  // abstract bundle(path: string): Promise<void>;
+  abstract emit(path: string): Promise<void>;
+
+  abstract initialize(): Promise<void>;
   abstract generateStructure(sd: fhir5.StructureDefinition): Promise<string>;
 }
