@@ -21,6 +21,8 @@ import {
   getValueTypeCode,
 } from "./paths";
 import { getValueType, getPrimitiveValueType } from "./types";
+import { join } from "path";
+import { mkdir, writeFile } from 'fs/promises';
 
 export class Javascript extends Generator {
   protected project?: Project;
@@ -33,7 +35,13 @@ export class Javascript extends Generator {
    * @param {string} path 
    */
   async emit() : Promise<void> {
-    await this.project?.emit();
+    if (!this.sourceFile) {
+      throw new Error(`Can't emit until source is generated!`);
+    }
+    this.sourceFile?.formatText();
+    await mkdir(join(this.output, 'src'), {recursive: true});
+    await mkdir(join(this.output, 'dist'), {recursive: true});
+    await writeFile(join(this.output, 'src', 'structures.ts'), this.sourceFile?.getFullText());
   }
 
   private addClass(id, cls: ClassDeclarationStructure): ClassDeclaration {
@@ -49,7 +57,7 @@ export class Javascript extends Generator {
     } else {
       logger.warn(`Couldn't find URL for class ${className}`);
     }
-    const result = this.ns?.addClass(cls);
+    const result = this.sourceFile?.addClass(cls);
     if (result) {
       return result;
     }
@@ -80,7 +88,7 @@ export class Javascript extends Generator {
 
     // find and add all the types used by this class.
     if (sd.kind == "primitive-type") {
-      const element = this.ns?.getTypeAliasOrThrow("Element");
+      const element = this.sourceFile?.getTypeAliasOrThrow("Element");
       element?.setType(
         element?.getTypeNodeOrThrow().getText() + `| ${className}`
       );
@@ -97,19 +105,19 @@ export class Javascript extends Generator {
       }
 
       if (sd.kind == "resource") {
-        const resource = this.ns?.getTypeAliasOrThrow("Resource");
+        const resource = this.sourceFile?.getTypeAliasOrThrow("Resource");
         resource?.setType(
           resource?.getTypeNodeOrThrow().getText() + `| ${className}`
         );
       } else if (sd.kind == "complex-type") {
-        const element = this.ns?.getTypeAliasOrThrow("Element");
+        const element = this.sourceFile?.getTypeAliasOrThrow("Element");
         element?.setType(
           element?.getTypeNodeOrThrow().getText() + `| ${className}`
         );
       }
     }
 
-    const inter = this.ns?.addInterface({ name: `I${className}` });
+    const inter = this.sourceFile?.addInterface({ name: `I${className}` });
     const cls = this.addClass(sd.id, {
       name: camelize(sd.name.replace(/\W/g, "_")).replace("Metum", "MetUM"),
       // extends: baseClass,
@@ -287,10 +295,10 @@ export class Javascript extends Generator {
       manipulationSettings: {
         indentationText: IndentationText.TwoSpaces,
         newLineKind: NewLineKind.LineFeed,
-        useTrailingCommas: true, 
+        useTrailingCommas: true,
       },
       compilerOptions: {
-        outDir: this.output,
+        outDir: join(this.output, 'dist'),
         declaration: true,
       }
     });
@@ -306,14 +314,10 @@ export class Javascript extends Generator {
       }
     );
 
-    this.ns = this.sourceFile.addModule({
-      name: camelize(`fhir_${this.fhirVersion?.toLowerCase()}`),
-    });
-
     this.processed["http://hl7.org/fhirpath/System.String"] = "string";
     this.processed["http://hl7.org/fhirpath/System.Number"] = "number";
 
-    this.ns.addTypeAliases([
+    this.sourceFile.addTypeAliases([
       {
         name: "Resource",
         type: "Basic",
