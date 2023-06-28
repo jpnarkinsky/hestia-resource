@@ -7,8 +7,6 @@ import { StructureRegistry } from "./StructureRegistry";
 import { PackageRegistry } from "./PackageRegistry";
 import Promise from "bluebird";
 import { unique } from "radash";
-import path from "path";
-import { log } from "console";
 
 const program = new Command();
 
@@ -150,7 +148,7 @@ program
     );
 
     await generator.generate(profile);
-    await generator.dump();
+    await generator.bundle();
   });
 
 program.parseAsync().catch(console.error);
