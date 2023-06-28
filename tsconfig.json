@@ -15,13 +15,23 @@
     "moduleResolution": "node",
     "noImplicitAny": false,
     "removeComments": true,
-    "allowUnreachableCode": true,
-    "lib": ["es2018", "es2019", "es2020"],
-    "types": ["jest", "node", "fhir"],
+    "allowUnreachableCode": false,
+    "lib": [
+      "es2018",
+      "es2019",
+      "es2020"
+    ],
+    "types": [
+      "jest",
+      "node",
+      "fhir"
+    ],
     "esModuleInterop": true
   },
   "compileOnSave": false,
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"

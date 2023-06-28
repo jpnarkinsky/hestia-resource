@@ -67,27 +67,27 @@ program
 
 
     if (generatorName) {
-      config.data.generatorName = generatorName;
+      config.generatorName = generatorName;
     }
 
     if (enableFeature) {
       for (let feature of enableFeature) {
-        config.data.features[feature] = true;
+        config.features[feature] = true;
       }
     }
 
     if (disableFeature) {
       for (let feature of disableFeature) {
-        config.data.features[feature] = false;
+        config.features[feature] = false;
       }
     }
 
     if (outputPath) {
-      config.data.outputPath = outputPath;
+      config.outputPath = outputPath;
     }
 
     if (pkg) {
-      unique((config.data.packages = config.data.packages.concat(pkg).sort()));
+      unique((config.packages = config.packages.concat(pkg).sort()));
     }
 
     if (profile) {
@@ -111,7 +111,7 @@ program
       // we only load a package once, this doesn't cost us anything.
       const packageRegistry = new PackageRegistry();
       profile = (
-        await Promise.map(config.data.packages, (i: string) =>
+        await Promise.map(config.packages, (i: string) =>
           packageRegistry.load(i)
         )
       )
@@ -123,9 +123,9 @@ program
       );
     }
 
-    if (!existsSync(config.data.outputPath)) {
+    if (!existsSync(config.outputPath)) {
       try {
-        mkdirSync(config.data.outputPath);
+        mkdirSync(config.outputPath);
       } catch(error: any) {
         console.error(`Couldn't create output path: ${error.message}`);
         process.exit(1);
@@ -133,16 +133,16 @@ program
     }
 
     const structureRegistry = new StructureRegistry();
-    for (let pkg of config.data.packages) {
+    for (let pkg of config.packages) {
       await structureRegistry.addPackage(pkg);
     }
 
-    if (!generators[config.data.generatorName]) {
-      logger.error(`Unknown generator ${config.data.generatorName}`);
+    if (!generators[config.generatorName]) {
+      logger.error(`Unknown generator ${config.generatorName}`);
       process.exit(1);
     }
 
-    const generator = new generators[config.data.generatorName](
+    const generator = new generators[config.generatorName](
       structureRegistry,
       outputPath,
     );
