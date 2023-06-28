@@ -1,5 +1,4 @@
 import { StructureRegistry } from "src/StructureRegistry";
-import { Writable } from "stream";
 import { logger } from "../Logger";
 import Handlebars from "handlebars";
 
@@ -9,7 +8,7 @@ export abstract class Generator {
 
   constructor(
     protected structureRegistry: StructureRegistry,
-    protected target: Buffer | Writable | string
+    protected outputPath: string
   ) {}
 
   async generate(ids: string[]) {
@@ -54,6 +53,7 @@ export abstract class Generator {
   }
 
   // Abstract methods
-  abstract initialize(): Promise<undefined>;
+  abstract initialize(): Promise<void>;
   abstract generateStructure(sd: fhir5.StructureDefinition): Promise<string>;
+  abstract emit(): Promise<void>;
 }

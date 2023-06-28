@@ -331,4 +331,8 @@ export class TypeScript extends Generator {
     });
     return className;
   }
+
+  async emit(): Promise<void> { 
+    return;
+  }
 }
