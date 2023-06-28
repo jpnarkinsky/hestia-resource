@@ -1,11 +1,11 @@
-import { Configuration } from "./Configuration";
+import { Configuration, make, loadFromFile } from "./Configuration";
 
 describe("Configuration", function () {
   describe("Configuration.from", function () {
     let config: Configuration;
     beforeAll(function () {
-      config = Configuration.from({
-        generatorName: "Javascript",
+      config = make({
+        generatorName: "TypeScript",
         packages: ["hl7.fhir.us.davinci-pdex-plan-net@1.1.0"],
         features: {
           codeSystemEnums: true,
@@ -16,35 +16,36 @@ describe("Configuration", function () {
           "plannet-PractitionerRole",
         ],
         ignore: ["plannet-Endpoint"],
+        outputPath: 'foo',
       });
     });
 
     it("Should be able to build a configuration from an object", function () {
-      expect(Configuration.data).not.toBeNull;
+      expect(config).not.toBeNull;
     });
 
     it("Should have gotten the packages", function () {
-      expect(Configuration.data.packages).toContain(
+      expect(config.packages).toContain(
         "hl7.fhir.us.davinci-pdex-plan-net@1.1.0"
       );
     });
 
     it("should have gotten the ignore list", function () {
-      expect(Configuration.data.ignore).toContain("plannet-Endpoint");
+      expect(config.ignore).toContain("plannet-Endpoint");
     });
 
     it("should have gotten the configuration", function () {
-      expect(Configuration.data.features).toEqual({
+      expect(config.features).toEqual({
         codeSystemEnums: true,
       });
     });
   });
 
   it("Should be able to load a configuration from a yaml file", async function () {
-    await Configuration.fromFile("src/fixtures/davinci-pdex-plannet.yaml");
+    await loadFromFile("src/fixtures/davinci-pdex-plannet.yaml");
   });
 
   it("Should reject invalid configurations", async function () {
-    expect(() => Configuration.fromFile("src/fixtures/foo.yaml")).toThrowError;
+    expect(() => loadFromFile("src/fixtures/foo.yaml")).toThrowError;
   });
 });

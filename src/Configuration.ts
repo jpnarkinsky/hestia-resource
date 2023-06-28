@@ -15,35 +15,13 @@ const configSchema = z.object({
   outputPath: z.string().default("."),
 });
 
-type schema = z.infer<typeof configSchema>;
+export type Configuration = z.infer<typeof configSchema>;
 
-export class Configuration {
-  private data: schema;
-  private static instance?: Configuration;
+export async function loadFromFile(filename: string): Promise<Configuration> {
+  const data = yaml.load((await fs.readFile(filename)).toString());
+  return configSchema.parse(data);
+}
 
-  private constructor(data?: schema) {
-    if (data) {
-      this.data = data;
-    } else {
-      this.data = configSchema.parse({});
-    }
-  }
-
-  public static get data(): schema {
-    if (!Configuration.instance) {
-      Configuration.instance = new Configuration();
-    }
-
-    return Configuration.instance.data;
-  }
-
-  public static from(data?: schema): Configuration {
-    Configuration.instance = new Configuration(data);
-    return Configuration.instance;
-  }
-
-  public static async fromFile(filename: string): Promise<Configuration> {
-    const data = yaml.load((await fs.readFile(filename)).toString());
-    return Configuration.from(data);
-  }
+export function make(data?: Configuration): Configuration {
+  return configSchema.parse(data);
 }

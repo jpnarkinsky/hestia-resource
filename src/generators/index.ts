@@ -1,7 +1,7 @@
-import { Javascript } from "./Javascript";
+import { TypeScript } from "./TypeScript";
 
 const generators = {
-  Javascript,
+  TypeScript,
 };
 
 export default generators;

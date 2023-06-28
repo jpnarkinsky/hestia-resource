@@ -8,6 +8,7 @@ describe("Package", function () {
   }, 30000);
 
   test("#list should return a list of profiles", async function () {
+    const list = await pkg.list();
     expect(await pkg.list()).not.toHaveLength(0);
     expect(await pkg.list()).toContainEqual("plannet-Endpoint");
   });

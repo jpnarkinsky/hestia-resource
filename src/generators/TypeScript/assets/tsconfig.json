@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "strict": true,
+    "allowJs": false,
+    "pretty": true,
+    "resolveJsonModule": true,
+    "sourceMap": false,
+    "skipLibCheck": true,
+    "rootDir": "src",
+    "declaration": true,
+    "baseUrl": ".",
+    "target": "es2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "allowUnreachableCode": false,
+    "lib": ["es2018", "es2019", "es2020"],
+    "types": ["jest", "node", "fhir"],
+    "esModuleInterop": true
+  },
+  "compileOnSave": false,
+  "include": ["src"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}

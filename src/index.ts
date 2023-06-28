@@ -2,7 +2,7 @@ import { Command, Option } from "commander";
 import generators from "./generators";
 import { existsSync, mkdirSync } from "fs";
 import { logger } from "./Logger";
-import { Configuration } from "./Configuration";
+import { loadFromFile, make } from "./Configuration";
 import { StructureRegistry } from "./StructureRegistry";
 import { PackageRegistry } from "./PackageRegistry";
 import Promise from "bluebird";
@@ -14,10 +14,10 @@ program
   .addOption(
     new Option(
       "-g,--generator-name [generator-name]",
-      "Use a different generate (defaults to Javascript)"
+      "Use a different generate (defaults to TypeScript)"
     )
       .choices(Object.keys(generators))
-      .default("Javascript")
+      .default("TypeScript")
   )
   .addOption(
     new Option(
@@ -57,10 +57,10 @@ program
 
     let config;
     if (configFile) {
-      config = await Configuration.fromFile(configFile);
+      config = await loadFromFile(configFile);
     } else {
       // This will generate a new, blank configuration
-      config = Configuration.from();
+      config = make();
     }
 
 

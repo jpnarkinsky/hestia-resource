@@ -4,6 +4,7 @@ import { mkdtempSync, readFileSync } from "fs";
 import { join } from "path";
 import { tmpdir } from "os";
 import { PackageRegistryFHIRVersion } from "./PackageRegistry";
+import _ from 'radash';
 
 type PackageIndexEntry = {
   filename: string;
@@ -82,10 +83,10 @@ export class Package {
   /**
    * List contents
    *
-   * @returns {string[]} Id of all structures in package.
+   * @returns {string[]} Id of all artifacts in package.
    */
   list(): string[] {
-    return Object.keys(this.content);
+    return Object.values(this.content).map(i => i.id);
   }
 
   /** Return the package manifest (package.json) */

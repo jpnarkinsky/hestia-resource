@@ -2,6 +2,7 @@ import { StructureRegistry } from "src/StructureRegistry";
 import { logger } from "../Logger";
 import Handlebars from "handlebars";
 import {lstatSync, mkdirSync} from 'fs';
+import { Configuration } from "src/Configuration";
 
 export abstract class Generator {
   protected processed = new Set();
@@ -10,6 +11,7 @@ export abstract class Generator {
   constructor(
     protected structureRegistry: StructureRegistry,
     protected output: string,
+    config: Configuration,
   ) {
     try {
       let stats =  lstatSync(output);

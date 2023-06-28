@@ -1,5 +1,5 @@
-import { Generator } from "./Generator";
-import { logger } from "../Logger";
+import { Generator } from "../Generator";
+import { logger } from "../../Logger";
 import { camelize } from "inflected";
 import {
   ClassDeclaration,
@@ -19,12 +19,15 @@ import {
   getElementValueType,
   getExpression,
   getValueTypeCode,
-} from "./paths";
-import { getValueType, getPrimitiveValueType } from "./types";
+} from "../paths";
+import { getValueType, getPrimitiveValueType } from "../types";
 import { join } from "path";
 import { mkdir, writeFile } from 'fs/promises';
 
-export class Javascript extends Generator {
+import packageJson from './assets/package.json' assert {type: 'json'};
+import tsconfigJson from './assets/tsconfig.json' assert {type: 'json'};
+
+export class TypeScript extends Generator {
   protected project?: Project;
   protected sourceFile?: SourceFile;
   protected ns?: ModuleDeclaration;
@@ -42,6 +45,9 @@ export class Javascript extends Generator {
     await mkdir(join(this.output, 'src'), {recursive: true});
     await mkdir(join(this.output, 'dist'), {recursive: true});
     await writeFile(join(this.output, 'src', 'structures.ts'), this.sourceFile?.getFullText());
+    await writeFile(join(this.output, 'tsconfig.json'), JSON.stringify(tsconfigJson, null, 2));
+    await writeFile(join(this.output, 'package.json'), JSON.stringify(packageJson, null, 2));
+
   }
 
   private addClass(id, cls: ClassDeclarationStructure): ClassDeclaration {
