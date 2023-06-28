@@ -16,10 +16,10 @@ program
   .addOption(
     new Option(
       "-g,--generator-name [generator-name]",
-      "Use a different generate (defaults to TypeScript)"
+      "Use a different generate (defaults to Javascript)"
     )
       .choices(Object.keys(generators))
-      .default("TypeScript")
+      .default("Javascript")
   )
   .addOption(
     new Option(
@@ -105,8 +105,6 @@ program
       logger.info(`Skipping some structures: ${skip.join(", ")}`);
     }
 
-    
-
     // If no profiles are specified, default to generating all profiles
     // in the requested packages.
     if (!profile || profile.length == 0) {
@@ -147,11 +145,12 @@ program
     }
 
     const generator = new generators[config.data.generatorName](
-      structureRegistry
+      structureRegistry,
+      outputPath,
     );
 
     await generator.generate(profile);
-    await generator.dump(path);
+    await generator.dump();
   });
 
 program.parseAsync().catch(console.error);
