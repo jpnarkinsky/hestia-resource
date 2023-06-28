@@ -1,12 +1,14 @@
 import { Command, Option } from "commander";
 import generators from "./generators";
-import { createWriteStream } from "fs";
+import { existsSync, mkdirSync } from "fs";
 import { logger } from "./Logger";
 import { Configuration } from "./Configuration";
 import { StructureRegistry } from "./StructureRegistry";
 import { PackageRegistry } from "./PackageRegistry";
 import Promise from "bluebird";
 import { unique } from "radash";
+import path from "path";
+import { log } from "console";
 
 const program = new Command();
 
@@ -21,9 +23,9 @@ program
   )
   .addOption(
     new Option(
-      "-o,--output [output]",
-      "Specify an output file (defaults to stdout)"
-    ).default("-")
+      "-o,--output-path [outputPath]",
+      "Specify an output path (defaults to current working directory)"
+    ).default(".")
   )
   .addOption(
     new Option("-p,--profile [...profile]", "List of profiles to generator")
@@ -49,10 +51,10 @@ program
   .argument("[config-file]")
   .action(async function (
     configFile,
-    { generatorName, enableFeature, disableFeature, pkg, profile, skip, output }
+    { generatorName, enableFeature, disableFeature, pkg, profile, skip, outputPath }
   ) {
     logger.info(
-      `Will generate from ${configFile} with ${generatorName} to ${output}`
+      `Will generate from ${configFile} with ${generatorName} to ${outputPath}`
     );
 
     let config;
@@ -62,6 +64,9 @@ program
       // This will generate a new, blank configuration
       config = Configuration.from();
     }
+
+
+
 
     if (generatorName) {
       config.data.generatorName = generatorName;
@@ -77,6 +82,10 @@ program
       for (let feature of disableFeature) {
         config.data.features[feature] = false;
       }
+    }
+
+    if (outputPath) {
+      config.data.outputPath = outputPath;
     }
 
     if (pkg) {
@@ -96,18 +105,7 @@ program
       logger.info(`Skipping some structures: ${skip.join(", ")}`);
     }
 
-    let targetStream;
-    if (output == "-") {
-      logger.info(`Sending output to stdout`);
-      targetStream = process.stdout;
-    } else {
-      try {
-        targetStream = createWriteStream(output);
-      } catch (error: any) {
-        logger.error(`Couldn't open ${output} for writing: ${error.message}`);
-        process.exit(1);
-      }
-    }
+    
 
     // If no profiles are specified, default to generating all profiles
     // in the requested packages.
@@ -129,6 +127,15 @@ program
       );
     }
 
+    if (!existsSync(config.data.outputPath)) {
+      try {
+        mkdirSync(config.data.outputPath);
+      } catch(error: any) {
+        console.error(`Couldn't create output path: ${error.message}`);
+        process.exit(1);
+      }
+    }
+
     const structureRegistry = new StructureRegistry();
     for (let pkg of config.data.packages) {
       await structureRegistry.addPackage(pkg);
@@ -144,7 +151,7 @@ program
     );
 
     await generator.generate(profile);
-    await generator.dump(targetStream);
+    await generator.dump(path);
   });
 
 program.parseAsync().catch(console.error);

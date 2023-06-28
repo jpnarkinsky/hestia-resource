@@ -12,6 +12,7 @@ const configSchema = z.object({
   profiles: z.string().array().default([]),
   ignore: z.string().array().default([]),
   generatorName: z.string().default("TypeScript"),
+  outputPath: z.string().default("."),
 });
 
 type schema = z.infer<typeof configSchema>;

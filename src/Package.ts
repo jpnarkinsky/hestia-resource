@@ -1,10 +1,9 @@
 import { createGunzip } from "zlib";
 import tar from "tar-fs";
-import { fstat, mkdtempSync, readFileSync } from "fs";
+import { mkdtempSync, readFileSync } from "fs";
 import { join } from "path";
 import { tmpdir } from "os";
 import { PackageRegistryFHIRVersion } from "./PackageRegistry";
-import { logger } from "./Logger";
 
 type PackageIndexEntry = {
   filename: string;
